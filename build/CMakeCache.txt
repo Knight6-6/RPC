@@ -147,7 +147,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Project
+CMAKE_PROJECT_NAME:STATIC=RPC
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -222,6 +222,54 @@ Project_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 Project_SOURCE_DIR:STATIC=/home/knight/knight_RPC
+
+//Value Computed by CMake
+RPC_BINARY_DIR:STATIC=/home/knight/knight_RPC/build
+
+//Value Computed by CMake
+RPC_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+RPC_SOURCE_DIR:STATIC=/home/knight/knight_RPC
+
+//Value Computed by CMake
+core_BINARY_DIR:STATIC=/home/knight/knight_RPC/build/src/network/core
+
+//Value Computed by CMake
+core_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+core_SOURCE_DIR:STATIC=/home/knight/knight_RPC/src/network/core
+
+//Dependencies for the target
+core_lib_LIB_DEPENDS:STATIC=general;utils_lib;
+
+//Value Computed by CMake
+protocols_BINARY_DIR:STATIC=/home/knight/knight_RPC/build/src/network/protocols
+
+//Value Computed by CMake
+protocols_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+protocols_SOURCE_DIR:STATIC=/home/knight/knight_RPC/src/network/protocols
+
+//Value Computed by CMake
+server_BINARY_DIR:STATIC=/home/knight/knight_RPC/build/src/network
+
+//Value Computed by CMake
+server_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+server_SOURCE_DIR:STATIC=/home/knight/knight_RPC/src/network
+
+//Value Computed by CMake
+utils_BINARY_DIR:STATIC=/home/knight/knight_RPC/build/src/network/utils
+
+//Value Computed by CMake
+utils_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+utils_SOURCE_DIR:STATIC=/home/knight/knight_RPC/src/network/utils
 
 
 ########################
@@ -326,7 +374,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

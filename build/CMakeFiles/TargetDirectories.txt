@@ -1,2 +1,12 @@
 /home/knight/knight_RPC/build/CMakeFiles/edit_cache.dir
 /home/knight/knight_RPC/build/CMakeFiles/rebuild_cache.dir
+/home/knight/knight_RPC/build/src/network/CMakeFiles/edit_cache.dir
+/home/knight/knight_RPC/build/src/network/CMakeFiles/rebuild_cache.dir
+/home/knight/knight_RPC/build/src/network/protocols/CMakeFiles/protocols_lib.dir
+/home/knight/knight_RPC/build/src/network/protocols/CMakeFiles/edit_cache.dir
+/home/knight/knight_RPC/build/src/network/protocols/CMakeFiles/rebuild_cache.dir
+/home/knight/knight_RPC/build/src/network/core/CMakeFiles/core_lib.dir
+/home/knight/knight_RPC/build/src/network/core/CMakeFiles/edit_cache.dir
+/home/knight/knight_RPC/build/src/network/core/CMakeFiles/rebuild_cache.dir
+/home/knight/knight_RPC/build/src/rpc/CMakeFiles/edit_cache.dir
+/home/knight/knight_RPC/build/src/rpc/CMakeFiles/rebuild_cache.dir

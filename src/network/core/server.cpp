@@ -1,49 +1,38 @@
-#include "server.hpp"
-#include "logger.hpp"
+#include "knight/network/core/server.hpp"
+#include "knight/utils/logger.hpp"                 
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/epoll.h>
-#include <thread>
 
-constexpr int IO=20; 
+namespace knight::network
+{
 
-server::server():listensocket(-1){}
+server::server(std::unique_ptr<eventloopgroup> group_)
+{
+    group=std::move(group_);
+}
 
-server::~server(){}
+void server::set_server_task(std::function<void(uint64_t uid, char* s, size_t length)> server_task)
+{   
+    this->server_task=std::move(server_task);
+}
 
-bool server::init(const char* ip , unsigned short port)
+bool server::init(std::string ip , unsigned short port)
 {
     listensocket = socket(AF_INET , SOCK_STREAM , 0);
-    if(listensocket<0) logger::getlogger().error(1,"socket创建失败");
+    if(listensocket<0) knight::utils::logger::getlogger().error(1,"socket创建失败");
     struct sockaddr_in serversockaddr;
     serversockaddr.sin_port=htons(port);
     serversockaddr.sin_family=AF_INET;
-    inet_pton(AF_INET , ip , &serversockaddr.sin_addr);
+    inet_pton(AF_INET , ip.data() , &serversockaddr.sin_addr);
     int bind_fd=bind(listensocket , (sockaddr*)&serversockaddr , sizeof(serversockaddr));
-    if(bind_fd<0) logger::getlogger().error(1,"绑定端口号失败");
-    if(listen(listensocket ,128)<0) logger::getlogger().error(1,"监听失败");
+    if(bind_fd<0) knight::utils::logger::getlogger().error(1,"绑定端口号失败");
+    if(listen(listensocket ,128)<0) knight::utils::logger::getlogger().error(1,"监听失败");
     return true;
 }
 void server::start()
 {
-    connectpoll_=std::make_unique<connectpool>();
-    threadpoll_=std::make_unique<threadpool>(20);
-    sessionobject=std::make_unique<objectpool<sessioncontext>>(100);
-    for(int i=0 ; i<IO ; i++)
-    {
-        usermanager_.emplace_back(std::make_unique<usermanager>(threadpoll_.get(), connectpoll_.get()));
-        IOthread.emplace_back(std::make_unique<recvserver>(usermanager_[i].get() , sessionobject.get()));
-    }      
-    for(int i=0 ; i<IO ; i++)
-    {
-       std::thread([this,i]()
-       {
-          IOthread[i]->init();
-          IOthread[i]->start();
-       }).detach();
-    }
-    int nextIO=0;
     while(true)
     {
         struct sockaddr_in clientbuf;
@@ -51,17 +40,26 @@ void server::start()
         int acceptfd=accept(listensocket ,(sockaddr*)&clientbuf , &length);
         if(acceptfd<0) 
         {
-            logger::getlogger().error(1,"客户端连接失败");
+            knight::utils::logger::getlogger().error(1,"客户端连接失败");
             continue;
         }
-        int s= nextIO++ % IO;
-        struct epoll_event ev{};
-        ev.events = EPOLLIN | EPOLLERR| EPOLLOUT |EPOLLRDHUP;
-        ev.data.fd =acceptfd;
-        if(epoll_ctl(IOthread[s]->EPOLL(),EPOLL_CTL_ADD , acceptfd , &ev)<0)
-        {
-            logger::getlogger().error(1,"epoll_ctl add 错误");
-        }
-        IOthread[s]->add_clientInfo(acceptfd,clientbuf);
+        char ip[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &clientbuf.sin_addr, ip, sizeof(ip));
+        unsigned short port = ntohs(clientbuf.sin_port);
+        group->addclient(group->getid() , acceptfd , ip , port , server_task);
     }
+}
+
+void server::send_client(uint64_t uid , uint32_t fun_id , uint64_t seq_id , std::string data)
+{
+    std::string packet;
+    auto io = group->getio(uid);
+    uint32_t length = data.size() + 16;
+    packet.append(reinterpret_cast<const char*>(&length), 4);
+    packet.append(reinterpret_cast<const char*>(&fun_id), 4);
+    packet.append(reinterpret_cast<const char*>(&seq_id), 8);
+    packet.append(reinterpret_cast<const char*>(data.data()),data.size());
+    io->send_data(uid , packet);
+}
+
 }

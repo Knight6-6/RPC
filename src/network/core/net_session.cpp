@@ -1,19 +1,27 @@
-#include "net_session.hpp"
+#include "knight/network/core/net_session.hpp"
+#include <arpa/inet.h>
 
-netsession::netsession(){}
-
-netsession::netsession(sockaddr_in& so):client_(so){}
-
-void netsession::init(sockaddr_in&  so)
+namespace knight::network
 {
-    client_.init(so);
+
+void netsession::set_ip(std::string ip)
+{
+   this->ip=ip;
+}
+
+void netsession::set_port(unsigned short port)
+{
+   this->port=port;
 }
 
 void netsession::clean()
 {
-    client_.clean();
-    sendbuf.clean();
-    recvbuf.clean();
+   ip.clear();
+   port=0;
+   uid=0;
+   del=false;
+   sendbuf.clean();
+   recvbuf.clean();
 }
 
 void netsession::sendwrite(char* data, size_t len)
@@ -65,3 +73,39 @@ size_t netsession::recvhowsize()
 {
    return recvbuf.howsize();
 } 
+
+void netsession::set_id(uint64_t uid_)
+{
+   uid=uid_;
+}
+void netsession::set_fd(int fd_)
+{
+   fd=fd_;   
+}
+void netsession::set_del(bool del_)
+{
+   del=del_;
+}
+bool netsession::get_del()
+{
+   return del;
+}
+
+uint64_t netsession::get_uid()
+{
+   return uid;
+}
+int netsession::get_fd()
+{
+   return fd;
+}
+void netsession::set_fun(std::function<void(uint64_t uid,char* s , size_t length)> fun)
+{
+   session_task=fun;
+}
+std::function<void(uint64_t uid,char* s , size_t length)>netsession::get_fun()
+{
+   return session_task;
+}
+
+}

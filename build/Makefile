@@ -116,6 +116,32 @@ depend:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+#=============================================================================
+# Target rules for targets named protocols_lib
+
+# Build rule for target.
+protocols_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 protocols_lib
+.PHONY : protocols_lib
+
+# fast build rule for target.
+protocols_lib/fast:
+	$(MAKE) $(MAKESILENT) -f src/network/protocols/CMakeFiles/protocols_lib.dir/build.make src/network/protocols/CMakeFiles/protocols_lib.dir/build
+.PHONY : protocols_lib/fast
+
+#=============================================================================
+# Target rules for targets named core_lib
+
+# Build rule for target.
+core_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 core_lib
+.PHONY : core_lib
+
+# fast build rule for target.
+core_lib/fast:
+	$(MAKE) $(MAKESILENT) -f src/network/core/CMakeFiles/core_lib.dir/build.make src/network/core/CMakeFiles/core_lib.dir/build
+.PHONY : core_lib/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -124,6 +150,8 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... core_lib"
+	@echo "... protocols_lib"
 .PHONY : help
 
 
