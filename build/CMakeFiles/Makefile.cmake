@@ -11,10 +11,12 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.28.3/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.3/CMakeSystem.cmake"
+  "/home/knight/knight_RPC/src/naming/CMakeLists.txt"
   "/home/knight/knight_RPC/src/network/CMakeLists.txt"
   "/home/knight/knight_RPC/src/network/core/CMakeLists.txt"
   "/home/knight/knight_RPC/src/network/protocols/CMakeLists.txt"
   "/home/knight/knight_RPC/src/rpc/CMakeLists.txt"
+  "/home/knight/knight_RPC/src/utils/CMakeLists.txt"
   "/usr/share/cmake-3.28/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake"
@@ -23,16 +25,25 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake"
   "/usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake"
+  "/usr/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake"
+  "/usr/share/cmake-3.28/Modules/CheckIncludeFile.cmake"
+  "/usr/share/cmake-3.28/Modules/CheckLibraryExists.cmake"
   "/usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
   "/usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake"
   "/usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake"
   "/usr/share/cmake-3.28/Modules/Compiler/GNU.cmake"
+  "/usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake"
+  "/usr/share/cmake-3.28/Modules/FindPackageMessage.cmake"
+  "/usr/share/cmake-3.28/Modules/FindProtobuf.cmake"
+  "/usr/share/cmake-3.28/Modules/FindThreads.cmake"
+  "/usr/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake"
   "/usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake"
   "/usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake"
   "/usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake"
   "/usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake"
   "/usr/share/cmake-3.28/Modules/Platform/Linux.cmake"
   "/usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake"
+  "/usr/share/cmake-3.28/Modules/SelectLibraryConfigurations.cmake"
   )
 
 # The corresponding makefile is:
@@ -44,6 +55,8 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/utils/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/naming/CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/network/CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/network/protocols/CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/network/core/CMakeFiles/CMakeDirectoryInformation.cmake"
@@ -52,6 +65,9 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "src/network/protocols/CMakeFiles/protocols_lib.dir/DependInfo.cmake"
-  "src/network/core/CMakeFiles/core_lib.dir/DependInfo.cmake"
+  "src/utils/CMakeFiles/utils_lib.dir/DependInfo.cmake"
+  "src/naming/CMakeFiles/naming_lib.dir/DependInfo.cmake"
+  "src/network/protocols/CMakeFiles/network_protocols_lib.dir/DependInfo.cmake"
+  "src/network/core/CMakeFiles/network_core_lib.dir/DependInfo.cmake"
+  "src/rpc/CMakeFiles/rpc_lib.dir/DependInfo.cmake"
   )

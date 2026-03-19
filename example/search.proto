@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package knight.rpc.test;
+
+// 使用者定义的请求
+message SearchRequest {
+    string query = 1;
+}
+
+// 使用者定义的响应
+message SearchResponse {
+    repeated string results = 1;
+}
+

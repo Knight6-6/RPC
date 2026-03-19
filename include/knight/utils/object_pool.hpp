@@ -43,10 +43,10 @@ public:
     std::shared_ptr<T> acquire_shared()
     {
         auto it = acquire_unique();
-        T* raw = it.release;
-        return std::shared_ptr(raw , [this](T* p)
+        T* raw = it.release();
+        return std::shared_ptr<T>(raw , [this](T* p)
         {
-            reset(std::unique_ptr(p));
+            reset(std::unique_ptr<T>(p));
         });
         
     }

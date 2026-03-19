@@ -11,23 +11,21 @@
 namespace knight::utils
 {
 
-constexpr struct timespec req = { 0, 9000000 };
-
 class timeouttask
 { 
 public:
     std::function<void()> task;
     int cycles;
-    int fd;
-    timeouttask(std::function<void()> task_,int fd_, int cycles_);
+    int id;
+    timeouttask(std::function<void()> task_,int id_, int cycles_);
 };
 
 class timer
 {
 public:
     static timer& gettimer();
-    void addtime(int fd,std::chrono::steady_clock::time_point timeout, std::function<void()> task);
-    void deltime(int fd);
+    void addtime(int id,std::chrono::steady_clock::time_point timeout, std::function<void()> task);
+    void deltime(int id);
 private:
     timer();
     ~timer()=default;

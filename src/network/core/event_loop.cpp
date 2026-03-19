@@ -1,6 +1,7 @@
 #include "knight/network/core/event_loop.hpp"
 #include "knight/utils/logger.hpp"
 #include "knight/utils/timer.hpp"
+#include <cstddef>
 #include <sys/epoll.h>
 #include <cstdio>
 #include <cerrno> 
@@ -8,13 +9,18 @@
 #include <unistd.h>
 #include <cerrno>
 #include <sys/eventfd.h>
+#include <vector>
 
 namespace knight::network
 {
 
 constexpr int IOMAX=200;
 
-eventloop::eventloop(knight::utils::objectpool<netsession>* obje , codec* codec_):session_pool(obje),code(codec_){}
+eventloop::eventloop(knight::utils::objectpool<netsession>* obje , codec* codec_):session_pool(obje),code(codec_)
+{
+    init();
+    udp_session=std::make_shared<netsession>();
+}
 
 eventloop::~eventloop()
 {
@@ -24,6 +30,8 @@ eventloop::~eventloop()
     }
     session_map.clear();
     close(epoll_fd);
+    close(wakeup_fd);
+    close(udp_fd);
 }
 
 int eventloop::getepoll()
@@ -31,26 +39,53 @@ int eventloop::getepoll()
     return epoll_fd;
 }
 
-bool eventloop::add_clientInfo(uint64_t uid_ , int fd_ , std::string ip , unsigned short port , std::function<void(uint64_t uid, char* s, size_t length)> task)
+bool eventloop::add_tcp_client(uint64_t uid_ , int fd_ , std::string ip , unsigned short port , std::function<void(uint64_t uid, char* s, size_t length)> task)
 {
-    struct epoll_event ev{};
-    ev.events = EPOLLIN | EPOLLERR| EPOLLRDHUP;
-    ev.data.fd =fd_;
-    if(epoll_ctl(epoll_fd,EPOLL_CTL_ADD , fd_ , &ev)<0)
     {
-        knight::utils::logger::getlogger().error(1,"epoll_ctl add 错误");
+    std::lock_guard<std::mutex> l(lock);
+    push_task.push_back([=]()
+    {
+        struct epoll_event ev{};
+        ev.events = EPOLLIN | EPOLLERR| EPOLLRDHUP;
+        ev.data.fd =fd_;
+        if(epoll_ctl(epoll_fd,EPOLL_CTL_ADD , fd_ , &ev)<0)
+        {
+            knight::utils::logger::getlogger().error(1,"epoll_ctl add 错误");
+        }
+        auto s=session_pool->acquire_unique();
+        uint64_t uid=uid_;
+        s->set_ip(ip);
+        s->set_port(port);
+        s->set_fd(fd_);
+        s->set_id(uid);
+        s->set_task(task);
+        auto p=s.get(); 
+        fd_to_uid.emplace(fd_,uid);
+        session_map.emplace(uid,std::move(s));
+        knight::utils::timer::gettimer().addtime(fd_ ,std::chrono::steady_clock::now()+std::chrono::seconds(30),[p,this](){p->set_del(true);wakeup();});
+    });
     }
-    auto s=session_pool->acquire_unique();
-    uint64_t uid=uid_;
-    s->set_ip(ip);
-    s->set_port(port);
-    s->set_fd(fd_);
-    s->set_id(uid);
-    s->set_fun(task);
-    auto p=s.get(); 
-    fd_to_uid.emplace(fd_,uid);
-    session_map.emplace(uid,std::move(s));
-    knight::utils::timer::gettimer().addtime(fd_ ,std::chrono::steady_clock::now()+std::chrono::seconds(30),[p,this](){p->set_del(true);wakeup();});
+    return true;
+}
+
+bool eventloop::add_udp_client(int udp  , std::function<void(const char * , size_t)> udp_task)
+{
+    {
+        std::unique_lock<std::mutex> l(lock);
+        push_task.push_back([=]()
+        {
+            udp_fd = udp;
+            udp_session->set_udp_task(udp_task);
+            struct epoll_event ev;
+            ev.events = EPOLLIN | EPOLLERR;
+            ev.data.fd =udp;
+            if(epoll_ctl(epoll_fd,EPOLL_CTL_ADD , udp , &ev)<0)
+            {
+                knight::utils::logger::getlogger().error(1,"epoll_ctl add udp 错误");
+            }
+            return true;
+        });
+    }
     return true;
 }
 
@@ -82,12 +117,12 @@ void eventloop::send_data(uint64_t uid , std::string buf)
                 {
                     it->second->sendwrite(buf.data() , buf.size());
                 }
+                else knight::utils::logger::getlogger().error(1,"event 发送失败");
             }
             else if(s<buf.size())
             {
                 it->second->sendwrite(buf.data()+s , buf.size()-s);
             }
-            else knight::utils::logger::getlogger().error(1,"发送失败");
         }
     }));
     }
@@ -109,7 +144,7 @@ bool eventloop::init()
         return false;
     }
     struct epoll_event ev;
-    ev.events = EPOLLIN | EPOLLET; 
+    ev.events = EPOLLIN; 
     ev.data.fd = wakeup_fd;       
     if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, wakeup_fd, &ev) == -1)
     {
@@ -129,19 +164,29 @@ bool eventloop::start()
         for(int i=0 ; i<sum ; i++)                      
         {
             int ready_fd=events[i].data.fd;
-            if(ready_fd==wakeup_fd) continue;
+            if (ready_fd == wakeup_fd) 
+            { 
+                uint64_t one;
+                read(ready_fd, &one, sizeof(one));
+                continue; 
+            }
+            if(ready_fd == udp_fd)//当触发的是udp时
+            {
+                code->codecudpin(udp_session , ready_fd);
+                continue;
+            }
             uint32_t type_fd=events[i].events;
             auto it_fd=fd_to_uid.find(ready_fd);
-            if(it_fd==fd_to_uid.end()) continue;
+            if(it_fd==fd_to_uid.end())  continue;
             auto it_se=session_map.find(it_fd->second);
-            if(it_se==session_map.end()||it_se->second->get_del()==true) continue;
+            if(it_se==session_map.end()) continue;
             if(type_fd&EPOLLIN)
             {
                 code->codecin(it_se , ready_fd);       
             }
             if(type_fd&EPOLLOUT)
             {
-                code->codecout();
+                code->codecout(it_se, ready_fd);
                 struct epoll_event ev;
                 ev.events = EPOLLIN | EPOLLERR| EPOLLRDHUP; 
                 ev.data.fd = ready_fd;
@@ -149,7 +194,7 @@ bool eventloop::start()
             }
             if(type_fd&EPOLLRDHUP)
             {
-                code->codecrdhup();
+                code->codecrdhup(it_se , ready_fd);
             } 
             if(type_fd&EPOLLERR)
             {

@@ -1,9 +1,16 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.10)
 
 project(protocols)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(protocols_lib codec.cpp)
+add_library(network_protocols_lib 
+    codec.cpp
+)
 
-target_link_libraries(protocols_lib PUBLIC )
+target_link_libraries(network_protocols_lib PUBLIC 
+    utils_lib 
+)
+
+
+

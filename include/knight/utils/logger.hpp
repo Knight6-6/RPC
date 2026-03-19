@@ -48,12 +48,12 @@ public:
         { 
             if(length>=file_max)
             {
-            write_file.close();
-            char time_name[40];
-            strftime(time_name , sizeof(time_name) ,"log_%Y-%m-%d-%H_%M_%S.txt",time_);
-            strcpy(file_name ,time_name);
-            write_file.open(file_name,std::ios::out|std::ios::app);
-            length=0;
+                write_file.close();
+                char time_name[40];
+                strftime(time_name , sizeof(time_name) ,"log_%Y-%m-%d-%H_%M_%S.txt",time_);
+                strcpy(file_name ,time_name);
+                write_file.open(file_name,std::ios::out|std::ios::app);
+                length=0;
             }
             write_file <<buf;
             length+=buf.size();

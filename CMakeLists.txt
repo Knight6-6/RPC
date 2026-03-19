@@ -6,5 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
+find_package(Protobuf REQUIRED)
+include_directories(${Protobuf_INCLUDE_DIRS})
+
+add_subdirectory(src/utils)
+add_subdirectory(src/naming)
 add_subdirectory(src/network)
 add_subdirectory(src/rpc)
+
+

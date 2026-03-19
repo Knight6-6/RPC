@@ -31,6 +31,7 @@ bool server::init(std::string ip , unsigned short port)
     if(listen(listensocket ,128)<0) knight::utils::logger::getlogger().error(1,"监听失败");
     return true;
 }
+
 void server::start()
 {
     while(true)
@@ -46,17 +47,19 @@ void server::start()
         char ip[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &clientbuf.sin_addr, ip, sizeof(ip));
         unsigned short port = ntohs(clientbuf.sin_port);
-        group->addclient(group->getid() , acceptfd , ip , port , server_task);
+        uint64_t uid = group->getuid();
+        group->add_tcp_client( uid, acceptfd , ip , port , server_task);
     }
 }
 
-void server::send_client(uint64_t uid , uint32_t fun_id , uint64_t seq_id , std::string data)
-{
+void server::send_client(uint64_t uid , uint64_t seq_id , std::string data)
+{//回包格式  4字节长度   8字节seq_id
     std::string packet;
     auto io = group->getio(uid);
-    uint32_t length = data.size() + 16;
+    uint32_t length = data.size() + 8;
+    length = htonl(length);
     packet.append(reinterpret_cast<const char*>(&length), 4);
-    packet.append(reinterpret_cast<const char*>(&fun_id), 4);
+    seq_id = htobe64(seq_id);
     packet.append(reinterpret_cast<const char*>(&seq_id), 8);
     packet.append(reinterpret_cast<const char*>(data.data()),data.size());
     io->send_data(uid , packet);

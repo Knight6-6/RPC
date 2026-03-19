@@ -13,7 +13,7 @@ logger& logger::getlogger()
 
 logger::logger()
 {
-    strcpy(file_name,"FIRSTfile.tet");
+    strcpy(file_name,"first_file.txt");
     write_file.open(file_name,std::ios::out|std::ios::app);
 }
 

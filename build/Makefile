@@ -117,30 +117,69 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named protocols_lib
+# Target rules for targets named utils_lib
 
 # Build rule for target.
-protocols_lib: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 protocols_lib
-.PHONY : protocols_lib
+utils_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 utils_lib
+.PHONY : utils_lib
 
 # fast build rule for target.
-protocols_lib/fast:
-	$(MAKE) $(MAKESILENT) -f src/network/protocols/CMakeFiles/protocols_lib.dir/build.make src/network/protocols/CMakeFiles/protocols_lib.dir/build
-.PHONY : protocols_lib/fast
+utils_lib/fast:
+	$(MAKE) $(MAKESILENT) -f src/utils/CMakeFiles/utils_lib.dir/build.make src/utils/CMakeFiles/utils_lib.dir/build
+.PHONY : utils_lib/fast
 
 #=============================================================================
-# Target rules for targets named core_lib
+# Target rules for targets named naming_lib
 
 # Build rule for target.
-core_lib: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 core_lib
-.PHONY : core_lib
+naming_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 naming_lib
+.PHONY : naming_lib
 
 # fast build rule for target.
-core_lib/fast:
-	$(MAKE) $(MAKESILENT) -f src/network/core/CMakeFiles/core_lib.dir/build.make src/network/core/CMakeFiles/core_lib.dir/build
-.PHONY : core_lib/fast
+naming_lib/fast:
+	$(MAKE) $(MAKESILENT) -f src/naming/CMakeFiles/naming_lib.dir/build.make src/naming/CMakeFiles/naming_lib.dir/build
+.PHONY : naming_lib/fast
+
+#=============================================================================
+# Target rules for targets named network_protocols_lib
+
+# Build rule for target.
+network_protocols_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 network_protocols_lib
+.PHONY : network_protocols_lib
+
+# fast build rule for target.
+network_protocols_lib/fast:
+	$(MAKE) $(MAKESILENT) -f src/network/protocols/CMakeFiles/network_protocols_lib.dir/build.make src/network/protocols/CMakeFiles/network_protocols_lib.dir/build
+.PHONY : network_protocols_lib/fast
+
+#=============================================================================
+# Target rules for targets named network_core_lib
+
+# Build rule for target.
+network_core_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 network_core_lib
+.PHONY : network_core_lib
+
+# fast build rule for target.
+network_core_lib/fast:
+	$(MAKE) $(MAKESILENT) -f src/network/core/CMakeFiles/network_core_lib.dir/build.make src/network/core/CMakeFiles/network_core_lib.dir/build
+.PHONY : network_core_lib/fast
+
+#=============================================================================
+# Target rules for targets named rpc_lib
+
+# Build rule for target.
+rpc_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 rpc_lib
+.PHONY : rpc_lib
+
+# fast build rule for target.
+rpc_lib/fast:
+	$(MAKE) $(MAKESILENT) -f src/rpc/CMakeFiles/rpc_lib.dir/build.make src/rpc/CMakeFiles/rpc_lib.dir/build
+.PHONY : rpc_lib/fast
 
 # Help Target
 help:
@@ -150,8 +189,11 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... core_lib"
-	@echo "... protocols_lib"
+	@echo "... naming_lib"
+	@echo "... network_core_lib"
+	@echo "... network_protocols_lib"
+	@echo "... rpc_lib"
+	@echo "... utils_lib"
 .PHONY : help
 
 

@@ -1,0 +1,14 @@
+g++ -std=c++17 -I../include -o main_naming main_naming.cpp -L../knight_lib -lnaming_lib -lnetwork_core_lib -lutils_lib -lpthread
+
+
+g++ -std=c++17 -I../include -o main_server main_server.cpp search.pb.cc \
+-L../knight_lib \
+-Wl,--start-group -lrpc_lib -lnetwork_protocols_lib -lnaming_lib -lnetwork_core_lib -lutils_lib -Wl,--end-group \
+-lprotobuf -lpthread
+
+
+g++ -std=c++17 -I../include -o main_client main_client.cpp search.pb.cc \
+-L../knight_lib \
+-Wl,--start-group -lrpc_lib -lnetwork_protocols_lib -lnaming_lib -lnetwork_core_lib -lutils_lib -Wl,--end-group \
+-lprotobuf -lpthread
+
