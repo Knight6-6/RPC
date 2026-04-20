@@ -4,12 +4,12 @@ project(protocols)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(network_protocols_lib 
+add_library(network_protocols 
     codec.cpp
 )
 
-target_link_libraries(network_protocols_lib PUBLIC 
-    utils_lib 
+target_link_libraries(network_protocols PUBLIC 
+    utils 
 )
 
 

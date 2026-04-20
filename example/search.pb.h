@@ -4,6 +4,7 @@
 #ifndef GOOGLE_PROTOBUF_INCLUDED_search_2eproto
 #define GOOGLE_PROTOBUF_INCLUDED_search_2eproto
 
+#include <limits>
 #include <string>
 
 #include <google/protobuf/port_def.inc>
@@ -22,12 +23,14 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/arena.h>
 #include <google/protobuf/arenastring.h>
+#include <google/protobuf/generated_message_bases.h>
 #include <google/protobuf/generated_message_util.h>
 #include <google/protobuf/metadata_lite.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/service.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
@@ -46,18 +49,34 @@ extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table
 namespace knight {
 namespace rpc {
 namespace test {
+class DetailRequest;
+struct DetailRequestDefaultTypeInternal;
+extern DetailRequestDefaultTypeInternal _DetailRequest_default_instance_;
+class DetailResponse;
+struct DetailResponseDefaultTypeInternal;
+extern DetailResponseDefaultTypeInternal _DetailResponse_default_instance_;
+class Empty;
+struct EmptyDefaultTypeInternal;
+extern EmptyDefaultTypeInternal _Empty_default_instance_;
 class SearchRequest;
 struct SearchRequestDefaultTypeInternal;
 extern SearchRequestDefaultTypeInternal _SearchRequest_default_instance_;
 class SearchResponse;
 struct SearchResponseDefaultTypeInternal;
 extern SearchResponseDefaultTypeInternal _SearchResponse_default_instance_;
+class StatusResponse;
+struct StatusResponseDefaultTypeInternal;
+extern StatusResponseDefaultTypeInternal _StatusResponse_default_instance_;
 }  // namespace test
 }  // namespace rpc
 }  // namespace knight
 PROTOBUF_NAMESPACE_OPEN
+template<> ::knight::rpc::test::DetailRequest* Arena::CreateMaybeMessage<::knight::rpc::test::DetailRequest>(Arena*);
+template<> ::knight::rpc::test::DetailResponse* Arena::CreateMaybeMessage<::knight::rpc::test::DetailResponse>(Arena*);
+template<> ::knight::rpc::test::Empty* Arena::CreateMaybeMessage<::knight::rpc::test::Empty>(Arena*);
 template<> ::knight::rpc::test::SearchRequest* Arena::CreateMaybeMessage<::knight::rpc::test::SearchRequest>(Arena*);
 template<> ::knight::rpc::test::SearchResponse* Arena::CreateMaybeMessage<::knight::rpc::test::SearchResponse>(Arena*);
+template<> ::knight::rpc::test::StatusResponse* Arena::CreateMaybeMessage<::knight::rpc::test::StatusResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace knight {
 namespace rpc {
@@ -379,6 +398,680 @@ class SearchResponse final :
   union { Impl_ _impl_; };
   friend struct ::TableStruct_search_2eproto;
 };
+// -------------------------------------------------------------------
+
+class DetailRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:knight.rpc.test.DetailRequest) */ {
+ public:
+  inline DetailRequest() : DetailRequest(nullptr) {}
+  ~DetailRequest() override;
+  explicit PROTOBUF_CONSTEXPR DetailRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  DetailRequest(const DetailRequest& from);
+  DetailRequest(DetailRequest&& from) noexcept
+    : DetailRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline DetailRequest& operator=(const DetailRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DetailRequest& operator=(DetailRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DetailRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DetailRequest* internal_default_instance() {
+    return reinterpret_cast<const DetailRequest*>(
+               &_DetailRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(DetailRequest& a, DetailRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DetailRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DetailRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DetailRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DetailRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DetailRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DetailRequest& from) {
+    DetailRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DetailRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "knight.rpc.test.DetailRequest";
+  }
+  protected:
+  explicit DetailRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kIdFieldNumber = 1,
+  };
+  // uint32 id = 1;
+  void clear_id();
+  uint32_t id() const;
+  void set_id(uint32_t value);
+  private:
+  uint32_t _internal_id() const;
+  void _internal_set_id(uint32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:knight.rpc.test.DetailRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    uint32_t id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_search_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DetailResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:knight.rpc.test.DetailResponse) */ {
+ public:
+  inline DetailResponse() : DetailResponse(nullptr) {}
+  ~DetailResponse() override;
+  explicit PROTOBUF_CONSTEXPR DetailResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  DetailResponse(const DetailResponse& from);
+  DetailResponse(DetailResponse&& from) noexcept
+    : DetailResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline DetailResponse& operator=(const DetailResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DetailResponse& operator=(DetailResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DetailResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DetailResponse* internal_default_instance() {
+    return reinterpret_cast<const DetailResponse*>(
+               &_DetailResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(DetailResponse& a, DetailResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DetailResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DetailResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DetailResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DetailResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DetailResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DetailResponse& from) {
+    DetailResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DetailResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "knight.rpc.test.DetailResponse";
+  }
+  protected:
+  explicit DetailResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTitleFieldNumber = 1,
+    kContentFieldNumber = 2,
+  };
+  // string title = 1;
+  void clear_title();
+  const std::string& title() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_title(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_title();
+  PROTOBUF_NODISCARD std::string* release_title();
+  void set_allocated_title(std::string* title);
+  private:
+  const std::string& _internal_title() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_title(const std::string& value);
+  std::string* _internal_mutable_title();
+  public:
+
+  // string content = 2;
+  void clear_content();
+  const std::string& content() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_content(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_content();
+  PROTOBUF_NODISCARD std::string* release_content();
+  void set_allocated_content(std::string* content);
+  private:
+  const std::string& _internal_content() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_content(const std::string& value);
+  std::string* _internal_mutable_content();
+  public:
+
+  // @@protoc_insertion_point(class_scope:knight.rpc.test.DetailResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr title_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr content_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_search_2eproto;
+};
+// -------------------------------------------------------------------
+
+class Empty final :
+    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:knight.rpc.test.Empty) */ {
+ public:
+  inline Empty() : Empty(nullptr) {}
+  explicit PROTOBUF_CONSTEXPR Empty(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Empty(const Empty& from);
+  Empty(Empty&& from) noexcept
+    : Empty() {
+    *this = ::std::move(from);
+  }
+
+  inline Empty& operator=(const Empty& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Empty& operator=(Empty&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Empty& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Empty* internal_default_instance() {
+    return reinterpret_cast<const Empty*>(
+               &_Empty_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(Empty& a, Empty& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Empty* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Empty* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Empty* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Empty>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const Empty& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const Empty& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "knight.rpc.test.Empty";
+  }
+  protected:
+  explicit Empty(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:knight.rpc.test.Empty)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+  };
+  friend struct ::TableStruct_search_2eproto;
+};
+// -------------------------------------------------------------------
+
+class StatusResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:knight.rpc.test.StatusResponse) */ {
+ public:
+  inline StatusResponse() : StatusResponse(nullptr) {}
+  ~StatusResponse() override;
+  explicit PROTOBUF_CONSTEXPR StatusResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  StatusResponse(const StatusResponse& from);
+  StatusResponse(StatusResponse&& from) noexcept
+    : StatusResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline StatusResponse& operator=(const StatusResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StatusResponse& operator=(StatusResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StatusResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StatusResponse* internal_default_instance() {
+    return reinterpret_cast<const StatusResponse*>(
+               &_StatusResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(StatusResponse& a, StatusResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(StatusResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StatusResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StatusResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<StatusResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const StatusResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const StatusResponse& from) {
+    StatusResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(StatusResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "knight.rpc.test.StatusResponse";
+  }
+  protected:
+  explicit StatusResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kStatusFieldNumber = 1,
+    kLoadFieldNumber = 2,
+  };
+  // string status = 1;
+  void clear_status();
+  const std::string& status() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_status(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_status();
+  PROTOBUF_NODISCARD std::string* release_status();
+  void set_allocated_status(std::string* status);
+  private:
+  const std::string& _internal_status() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_status(const std::string& value);
+  std::string* _internal_mutable_status();
+  public:
+
+  // uint32 load = 2;
+  void clear_load();
+  uint32_t load() const;
+  void set_load(uint32_t value);
+  private:
+  uint32_t _internal_load() const;
+  void _internal_set_load(uint32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:knight.rpc.test.StatusResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr status_;
+    uint32_t load_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_search_2eproto;
+};
+// ===================================================================
+
+class SearchService_Stub;
+
+class SearchService : public ::PROTOBUF_NAMESPACE_ID::Service {
+ protected:
+  // This class should be treated as an abstract interface.
+  inline SearchService() {};
+ public:
+  virtual ~SearchService();
+
+  typedef SearchService_Stub Stub;
+
+  static const ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor* descriptor();
+
+  virtual void Search(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                       const ::knight::rpc::test::SearchRequest* request,
+                       ::knight::rpc::test::SearchResponse* response,
+                       ::google::protobuf::Closure* done);
+  virtual void GetDetail(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                       const ::knight::rpc::test::DetailRequest* request,
+                       ::knight::rpc::test::DetailResponse* response,
+                       ::google::protobuf::Closure* done);
+  virtual void GetStatus(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                       const ::knight::rpc::test::Empty* request,
+                       ::knight::rpc::test::StatusResponse* response,
+                       ::google::protobuf::Closure* done);
+
+  // implements Service ----------------------------------------------
+
+  const ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor* GetDescriptor();
+  void CallMethod(const ::PROTOBUF_NAMESPACE_ID::MethodDescriptor* method,
+                  ::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                  const ::PROTOBUF_NAMESPACE_ID::Message* request,
+                  ::PROTOBUF_NAMESPACE_ID::Message* response,
+                  ::google::protobuf::Closure* done);
+  const ::PROTOBUF_NAMESPACE_ID::Message& GetRequestPrototype(
+    const ::PROTOBUF_NAMESPACE_ID::MethodDescriptor* method) const;
+  const ::PROTOBUF_NAMESPACE_ID::Message& GetResponsePrototype(
+    const ::PROTOBUF_NAMESPACE_ID::MethodDescriptor* method) const;
+
+ private:
+  GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(SearchService);
+};
+
+class SearchService_Stub : public SearchService {
+ public:
+  SearchService_Stub(::PROTOBUF_NAMESPACE_ID::RpcChannel* channel);
+  SearchService_Stub(::PROTOBUF_NAMESPACE_ID::RpcChannel* channel,
+                   ::PROTOBUF_NAMESPACE_ID::Service::ChannelOwnership ownership);
+  ~SearchService_Stub();
+
+  inline ::PROTOBUF_NAMESPACE_ID::RpcChannel* channel() { return channel_; }
+
+  // implements SearchService ------------------------------------------
+
+  void Search(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                       const ::knight::rpc::test::SearchRequest* request,
+                       ::knight::rpc::test::SearchResponse* response,
+                       ::google::protobuf::Closure* done);
+  void GetDetail(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                       const ::knight::rpc::test::DetailRequest* request,
+                       ::knight::rpc::test::DetailResponse* response,
+                       ::google::protobuf::Closure* done);
+  void GetStatus(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                       const ::knight::rpc::test::Empty* request,
+                       ::knight::rpc::test::StatusResponse* response,
+                       ::google::protobuf::Closure* done);
+ private:
+  ::PROTOBUF_NAMESPACE_ID::RpcChannel* channel_;
+  bool owns_channel_;
+  GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(SearchService_Stub);
+};
+
+
 // ===================================================================
 
 
@@ -519,9 +1212,223 @@ SearchResponse::mutable_results() {
   return &_impl_.results_;
 }
 
+// -------------------------------------------------------------------
+
+// DetailRequest
+
+// uint32 id = 1;
+inline void DetailRequest::clear_id() {
+  _impl_.id_ = 0u;
+}
+inline uint32_t DetailRequest::_internal_id() const {
+  return _impl_.id_;
+}
+inline uint32_t DetailRequest::id() const {
+  // @@protoc_insertion_point(field_get:knight.rpc.test.DetailRequest.id)
+  return _internal_id();
+}
+inline void DetailRequest::_internal_set_id(uint32_t value) {
+  
+  _impl_.id_ = value;
+}
+inline void DetailRequest::set_id(uint32_t value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:knight.rpc.test.DetailRequest.id)
+}
+
+// -------------------------------------------------------------------
+
+// DetailResponse
+
+// string title = 1;
+inline void DetailResponse::clear_title() {
+  _impl_.title_.ClearToEmpty();
+}
+inline const std::string& DetailResponse::title() const {
+  // @@protoc_insertion_point(field_get:knight.rpc.test.DetailResponse.title)
+  return _internal_title();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DetailResponse::set_title(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.title_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:knight.rpc.test.DetailResponse.title)
+}
+inline std::string* DetailResponse::mutable_title() {
+  std::string* _s = _internal_mutable_title();
+  // @@protoc_insertion_point(field_mutable:knight.rpc.test.DetailResponse.title)
+  return _s;
+}
+inline const std::string& DetailResponse::_internal_title() const {
+  return _impl_.title_.Get();
+}
+inline void DetailResponse::_internal_set_title(const std::string& value) {
+  
+  _impl_.title_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DetailResponse::_internal_mutable_title() {
+  
+  return _impl_.title_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DetailResponse::release_title() {
+  // @@protoc_insertion_point(field_release:knight.rpc.test.DetailResponse.title)
+  return _impl_.title_.Release();
+}
+inline void DetailResponse::set_allocated_title(std::string* title) {
+  if (title != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.title_.SetAllocated(title, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.title_.IsDefault()) {
+    _impl_.title_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:knight.rpc.test.DetailResponse.title)
+}
+
+// string content = 2;
+inline void DetailResponse::clear_content() {
+  _impl_.content_.ClearToEmpty();
+}
+inline const std::string& DetailResponse::content() const {
+  // @@protoc_insertion_point(field_get:knight.rpc.test.DetailResponse.content)
+  return _internal_content();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DetailResponse::set_content(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.content_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:knight.rpc.test.DetailResponse.content)
+}
+inline std::string* DetailResponse::mutable_content() {
+  std::string* _s = _internal_mutable_content();
+  // @@protoc_insertion_point(field_mutable:knight.rpc.test.DetailResponse.content)
+  return _s;
+}
+inline const std::string& DetailResponse::_internal_content() const {
+  return _impl_.content_.Get();
+}
+inline void DetailResponse::_internal_set_content(const std::string& value) {
+  
+  _impl_.content_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DetailResponse::_internal_mutable_content() {
+  
+  return _impl_.content_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DetailResponse::release_content() {
+  // @@protoc_insertion_point(field_release:knight.rpc.test.DetailResponse.content)
+  return _impl_.content_.Release();
+}
+inline void DetailResponse::set_allocated_content(std::string* content) {
+  if (content != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.content_.SetAllocated(content, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.content_.IsDefault()) {
+    _impl_.content_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:knight.rpc.test.DetailResponse.content)
+}
+
+// -------------------------------------------------------------------
+
+// Empty
+
+// -------------------------------------------------------------------
+
+// StatusResponse
+
+// string status = 1;
+inline void StatusResponse::clear_status() {
+  _impl_.status_.ClearToEmpty();
+}
+inline const std::string& StatusResponse::status() const {
+  // @@protoc_insertion_point(field_get:knight.rpc.test.StatusResponse.status)
+  return _internal_status();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void StatusResponse::set_status(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.status_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:knight.rpc.test.StatusResponse.status)
+}
+inline std::string* StatusResponse::mutable_status() {
+  std::string* _s = _internal_mutable_status();
+  // @@protoc_insertion_point(field_mutable:knight.rpc.test.StatusResponse.status)
+  return _s;
+}
+inline const std::string& StatusResponse::_internal_status() const {
+  return _impl_.status_.Get();
+}
+inline void StatusResponse::_internal_set_status(const std::string& value) {
+  
+  _impl_.status_.Set(value, GetArenaForAllocation());
+}
+inline std::string* StatusResponse::_internal_mutable_status() {
+  
+  return _impl_.status_.Mutable(GetArenaForAllocation());
+}
+inline std::string* StatusResponse::release_status() {
+  // @@protoc_insertion_point(field_release:knight.rpc.test.StatusResponse.status)
+  return _impl_.status_.Release();
+}
+inline void StatusResponse::set_allocated_status(std::string* status) {
+  if (status != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.status_.SetAllocated(status, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.status_.IsDefault()) {
+    _impl_.status_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:knight.rpc.test.StatusResponse.status)
+}
+
+// uint32 load = 2;
+inline void StatusResponse::clear_load() {
+  _impl_.load_ = 0u;
+}
+inline uint32_t StatusResponse::_internal_load() const {
+  return _impl_.load_;
+}
+inline uint32_t StatusResponse::load() const {
+  // @@protoc_insertion_point(field_get:knight.rpc.test.StatusResponse.load)
+  return _internal_load();
+}
+inline void StatusResponse::_internal_set_load(uint32_t value) {
+  
+  _impl_.load_ = value;
+}
+inline void StatusResponse::set_load(uint32_t value) {
+  _internal_set_load(value);
+  // @@protoc_insertion_point(field_set:knight.rpc.test.StatusResponse.load)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 

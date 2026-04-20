@@ -12,7 +12,6 @@ public:
     void codecin(std::unordered_map<uint64_t,std::unique_ptr<netsession>>::iterator it , int ready_fd);
     bool codecout(std::unordered_map<uint64_t,std::unique_ptr<netsession>>::iterator it_se ,int ready_fd );
     void codecrdhup(std::unordered_map<uint64_t,std::unique_ptr<netsession>>::iterator it_se ,int ready_fd );
-    void codecudpin(std::shared_ptr<netsession> se, int fd);
 private:
 };
 

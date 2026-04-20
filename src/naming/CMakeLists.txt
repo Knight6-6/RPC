@@ -4,9 +4,8 @@ project(naming)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library (naming_lib
-    naming_server.cpp
-    naming_table.cpp
+add_library (etcd_client
+etcd_client.cpp
 )
 
-target_link_libraries(naming_lib PUBLIC utils_lib ${Protobuf_LIBRARIES})
+target_link_libraries(etcd_client PUBLIC utils ${Protobuf_LIBRARIES})

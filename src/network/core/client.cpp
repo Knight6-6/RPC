@@ -9,20 +9,15 @@ namespace knight::network
 
 client::client(std::unique_ptr<eventloopgroup> group_)
 {
-    group=std::move(group_);
+    this->group=std::move(group_);
 }
 
-void client::set_tcp_task(std::function<void(uint64_t, char*, size_t)> client_task)
+void client::set_server_task(std::function<void(uint64_t, char*, size_t)> client_task)
 {
-    this->tcp_task=std::move(client_task);
+    this->server_task=std::move(client_task);
 }
 
-void client::add_udp(int udp , std::function<void(const char * , size_t)> udp_task)
-{
-    group->add_udp_client(udp , udp_task);
-}
-
-uint64_t client::getconnect(std::string ip , unsigned short port)
+uint64_t client::get_server_connect(std::string ip , unsigned short port)
 {
     if(client_map.find({ip , port})==client_map.end())
     {
@@ -38,7 +33,7 @@ uint64_t client::getconnect(std::string ip , unsigned short port)
             knight::utils::logger::getlogger().error(1,"连接服务器失败");
             return 0;
         }
-        group->add_tcp_client(uid , fd , ip, port , tcp_task);
+        group->add_tcp_client(uid , fd , ip, port , server_task);
         client_map.emplace(std::make_pair(ip,port),uid);
     }
     uint64_t uid = client_map[std::make_pair(ip,port)];

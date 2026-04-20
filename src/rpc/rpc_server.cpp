@@ -1,6 +1,7 @@
+#include "knight/naming/etcd_client.hpp"
+#include "knight/utils/logger.hpp"
 #include <endian.h>
 #include <knight/rpc/rpc_server.hpp>
-#include <thread>
 #include <sys/socket.h>
 #include <knight/utils/timer.hpp>
 #include <netinet/in.h>
@@ -8,12 +9,10 @@
 
 namespace knight::rpc
 {
-rpcserver::rpcserver(std::string ip , uint16_t port)
+rpcserver::rpcserver(std::string url)
 {
-    naming_ip = ip;
-    naming_port = port;
-    udp_fd = socket(AF_INET , SOCK_DGRAM , 0);
-    auto server_group = std::make_unique<network::eventloopgroup>(15);
+    etcd_client = std::make_unique<naming::etcd_client>(url);
+    auto server_group = std::make_unique<network::eventloopgroup>(20);
     dispatcher = std::make_unique<rpcdispatcher>();
     networkserver = std::make_unique<network::server>(std::move(server_group));
     //注入回调函数
@@ -33,21 +32,23 @@ rpcserver::rpcserver(std::string ip , uint16_t port)
     });
 }
 
-bool rpcserver::run(std::string ip , unsigned short port)
+void rpcserver::run(std::string ip , unsigned short port)
 {
-    if(!networkserver->init(ip , port )) return false;
-    std::thread server_thread([this](){networkserver->start();});
-    send_packet(port);
-    if(server_thread.joinable()) {
-        server_thread.join();
+    if(!networkserver->init(ip , port)) return;
+    for(auto i: service_names_cache)
+    {
+        etcd_client->register_service(i,ip,port);
     }
-    return true;
+    knight::utils::logger::getlogger().info("所有服务已注册到 Etcd，开始监听流量...");
+    service_names_cache.clear();
+    networkserver->start();
 }
 
 void rpcserver::register_service(google::protobuf::Service* service)
 {
     const google::protobuf::ServiceDescriptor* servicedes = service->GetDescriptor();//获取元信息
-    std::string service_name = servicedes->name();//拿到service打包的名字
+    std::string service_name = servicedes->name();//拿到service打包的名字 
+    service_names_cache.push_back(service_name);
     int method_cnt = servicedes->method_count();//看service有几个方法
     for(int i=0 ; i<method_cnt ; i++)
     {
@@ -55,31 +56,6 @@ void rpcserver::register_service(google::protobuf::Service* service)
         std::string full_name = service_name +'.'+methoddes->name();
         dispatcher->register_service( full_name , service , methoddes);
     }
-}
-
-void rpcserver::send_packet(uint16_t port)
-{
-    utils::timer::gettimer().addtime(-2 , std::chrono::steady_clock::now()+std::chrono::seconds(5) , [port , this]()
-    {
-        auto names = dispatcher->get_name();
-        for(auto &name : names)
-        {
-            std::string buf;
-            uint8_t type = 0x01;
-            buf.append(reinterpret_cast<const char*>(&type), 1);
-            uint32_t name_length = htonl(name.size());
-            buf.append(reinterpret_cast<const char*>(&name_length), 4);
-            buf.append(name.data(), name.size());
-            uint16_t net_port = htons(port);
-            buf.append(reinterpret_cast<const char*>(&net_port), 2);
-            sockaddr_in rpcserveraddr;
-            rpcserveraddr.sin_family = AF_INET;
-            rpcserveraddr.sin_port = htons(naming_port);
-            inet_pton(AF_INET , naming_ip.data() , &rpcserveraddr.sin_addr);
-            sendto(udp_fd , buf.data() , buf.size() , 0 , (sockaddr*)&rpcserveraddr , sizeof(rpcserveraddr));
-        }
-        this->send_packet(port);
-    });
 }
 
 }

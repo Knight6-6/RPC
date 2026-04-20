@@ -10,7 +10,7 @@ using namespace knight::rpc;
 
 int main() {
     // 1. 初始化
-    rpcclient client("127.0.0.1", 8888);
+    rpcclient client("http://127.0.0.1:2379");
     int thread_num = 20;           // 开启 10 个并发线程
     int req_per_thread = 50000;     // 每个线程跑 2000 次，总共 2万次请求
     std::atomic<int> success_count{0};
@@ -32,7 +32,7 @@ int main() {
             for (int j = 0; j < req_per_thread; ++j) {
                 local_res.Clear();
                 // 调用 RPC
-                client.invoke("SearchService", local_req, local_res);
+                client.invoke("SearchService.Search", local_req, local_res);
                 
                 if (local_res.results_size() > 0) {
                     success_count.fetch_add(1, std::memory_order_relaxed);

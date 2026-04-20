@@ -1,14 +1,45 @@
-g++ -std=c++17 -I../include -o main_naming main_naming.cpp -L../knight_lib -lnaming_lib -lnetwork_core_lib -lutils_lib -lpthread
-
-
-g++ -std=c++17 -I../include -o main_server main_server.cpp search.pb.cc \
--L../knight_lib \
--Wl,--start-group -lrpc_lib -lnetwork_protocols_lib -lnaming_lib -lnetwork_core_lib -lutils_lib -Wl,--end-group \
+g++ -std=c++17 -I./include -I./example -o example/main_server example/main_server.cpp example/search.pb.cc \
+-L./knight_lib \
+-Wl,--start-group -lrpc -lnetwork_protocols -letcd_client -lnetwork_core -lutils -Wl,--end-group \
+-letcd-cpp-api -lcpprest -lgrpc++ -lgrpc -lgpr -laddress_sorting -lupb -lssl -lcrypto -lz \
 -lprotobuf -lpthread
 
 
-g++ -std=c++17 -I../include -o main_client main_client.cpp search.pb.cc \
--L../knight_lib \
--Wl,--start-group -lrpc_lib -lnetwork_protocols_lib -lnaming_lib -lnetwork_core_lib -lutils_lib -Wl,--end-group \
+g++ -std=c++17 -g -I./include -I./example -o example/main_client example/main_client.cpp example/search.pb.cc \
+-L./knight_lib \
+-Wl,--start-group -lrpc -lnetwork_protocols -letcd_client -lnetwork_core -lutils -Wl,--end-group \
+-letcd-cpp-api -lcpprest -lgrpc++ -lgrpc -lgpr -laddress_sorting -lupb -lssl -lcrypto -lz \
 -lprotobuf -lpthread
 
+节点1
+etcd --name node1 \
+  --data-dir node1.data \
+  --listen-client-urls http://127.0.0.1:2379 \
+  --advertise-client-urls http://127.0.0.1:2379 \
+  --listen-peer-urls http://127.0.0.1:2380 \
+  --initial-advertise-peer-urls http://127.0.0.1:2380 \
+  --initial-cluster node1=http://127.0.0.1:2380,node2=http://127.0.0.1:2280,node3=http://127.0.0.1:2180 \
+  --initial-cluster-token my-etcd-token \
+  --initial-cluster-state new
+
+节点2
+etcd --name node2 \
+  --data-dir node2.data \
+  --listen-client-urls http://127.0.0.1:2279 \
+  --advertise-client-urls http://127.0.0.1:2279 \
+  --listen-peer-urls http://127.0.0.1:2280 \
+  --initial-advertise-peer-urls http://127.0.0.1:2280 \
+  --initial-cluster node1=http://127.0.0.1:2380,node2=http://127.0.0.1:2280,node3=http://127.0.0.1:2180 \
+  --initial-cluster-token my-etcd-token \
+  --initial-cluster-state new
+
+节点3
+  etcd --name node3 \
+  --data-dir node3.data \
+  --listen-client-urls http://127.0.0.1:2179 \
+  --advertise-client-urls http://127.0.0.1:2179 \
+  --listen-peer-urls http://127.0.0.1:2180 \
+  --initial-advertise-peer-urls http://127.0.0.1:2180 \
+  --initial-cluster node1=http://127.0.0.1:2380,node2=http://127.0.0.1:2280,node3=http://127.0.0.1:2180 \
+  --initial-cluster-token my-etcd-token \
+  --initial-cluster-state new

@@ -1,14 +1,25 @@
 syntax = "proto3";
 
-package knight.rpc.test;
+package knight.rpc.test; 
 
-// 使用者定义的请求
-message SearchRequest {
-    string query = 1;
+option cc_generic_services = true;
+
+message SearchRequest { string query = 1; }
+message SearchResponse { repeated string results = 1; }
+
+// 新增：详情查询请求
+message DetailRequest { uint32 id = 1; }
+message DetailResponse { string title = 1; string content = 2; }
+
+// 新增：心跳或空请求
+message Empty {}
+message StatusResponse { string status = 1; uint32 load = 2; }
+
+service SearchService {
+    // 基础搜索
+    rpc Search(SearchRequest) returns (SearchResponse);
+    // 获取详情 (测试不同类型的参数)
+    rpc GetDetail(DetailRequest) returns (DetailResponse);
+    // 获取服务状态 (测试监控逻辑)
+    rpc GetStatus(Empty) returns (StatusResponse);
 }
-
-// 使用者定义的响应
-message SearchResponse {
-    repeated string results = 1;
-}
-

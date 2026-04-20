@@ -3,7 +3,7 @@ project(core)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(network_core_lib 
+add_library(network_core 
     client.cpp
     event_loop_group.cpp
     event_loop.cpp
@@ -11,9 +11,9 @@ add_library(network_core_lib
     server.cpp 
 )
 
-target_link_libraries(network_core_lib PUBLIC 
-    utils_lib 
-    network_protocols_lib
+target_link_libraries(network_core PUBLIC 
+    utils 
+    network_protocols
     ${Protobuf_LIBRARIES}
 )
 

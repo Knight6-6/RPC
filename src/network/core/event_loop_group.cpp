@@ -23,13 +23,10 @@ eventloopgroup::eventloopgroup(unsigned size_)
     }   
 }
 
- void eventloopgroup::add_udp_client(int udp , std::function<void(const char* , size_t)> task)
- {
-    for(unsigned i=0 ; i< size ; i++ )
-    {
-        io_thread[i]->add_udp_client(udp ,task);
-    }
- }
+void eventloopgroup::send_data(uint64_t uid , std::string data)
+{
+    getio(uid)->send_data(uid,data);
+}
 
 void eventloopgroup::add_tcp_client(uint64_t uid , int acceptfd , std::string ip , unsigned short port , std::function<void(uint64_t uid, char* s, size_t length)> task)
 {

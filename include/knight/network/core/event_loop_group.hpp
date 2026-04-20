@@ -15,8 +15,8 @@ public:
     eventloopgroup(unsigned size_);
     ~eventloopgroup()=default;    
     void add_tcp_client(uint64_t uid , int fd_ , std::string ip , unsigned short port , std::function<void(uint64_t uid, char* s, size_t length)> task);
-    void add_udp_client(int udp , std::function<void(const char* , size_t)> task);
     std::shared_ptr<eventloop> getio(uint64_t uid);
+    void send_data(uint64_t uid , std::string data);
     uint64_t getuid();
 private:
     std::vector<std::unique_ptr<knight::utils::objectpool<netsession>>> session_object;

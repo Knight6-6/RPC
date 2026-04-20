@@ -2,6 +2,7 @@
 #include "knight/utils/logger.hpp"
 #include "knight/utils/timer.hpp"
 #include <cstddef>
+#include <mutex>
 #include <sys/epoll.h>
 #include <cstdio>
 #include <cerrno> 
@@ -19,7 +20,6 @@ constexpr int IOMAX=200;
 eventloop::eventloop(knight::utils::objectpool<netsession>* obje , codec* codec_):session_pool(obje),code(codec_)
 {
     init();
-    udp_session=std::make_shared<netsession>();
 }
 
 eventloop::~eventloop()
@@ -31,7 +31,6 @@ eventloop::~eventloop()
     session_map.clear();
     close(epoll_fd);
     close(wakeup_fd);
-    close(udp_fd);
 }
 
 int eventloop::getepoll()
@@ -68,27 +67,6 @@ bool eventloop::add_tcp_client(uint64_t uid_ , int fd_ , std::string ip , unsign
     return true;
 }
 
-bool eventloop::add_udp_client(int udp  , std::function<void(const char * , size_t)> udp_task)
-{
-    {
-        std::unique_lock<std::mutex> l(lock);
-        push_task.push_back([=]()
-        {
-            udp_fd = udp;
-            udp_session->set_udp_task(udp_task);
-            struct epoll_event ev;
-            ev.events = EPOLLIN | EPOLLERR;
-            ev.data.fd =udp;
-            if(epoll_ctl(epoll_fd,EPOLL_CTL_ADD , udp , &ev)<0)
-            {
-                knight::utils::logger::getlogger().error(1,"epoll_ctl add udp 错误");
-            }
-            return true;
-        });
-    }
-    return true;
-}
-
 void eventloop::wakeup()
 {
     uint64_t one = 1;
@@ -103,6 +81,9 @@ void eventloop::send_data(uint64_t uid , std::string buf)
     push_task.push_back(std::move([this , uid , buf]() mutable
     {
         auto it = session_map.find(uid);
+        // 必须加这个判断！
+        if (it == session_map.end() || it->second == nullptr) return;
+            // 节点已经挂了，session 已经没了，直接丢弃任务
         if(it->second->sendhowsize()>0)
         {
             it->second->sendwrite(buf.data() , buf.size());
@@ -170,11 +151,6 @@ bool eventloop::start()
                 read(ready_fd, &one, sizeof(one));
                 continue; 
             }
-            if(ready_fd == udp_fd)//当触发的是udp时
-            {
-                code->codecudpin(udp_session , ready_fd);
-                continue;
-            }
             uint32_t type_fd=events[i].events;
             auto it_fd=fd_to_uid.find(ready_fd);
             if(it_fd==fd_to_uid.end())  continue;
@@ -195,7 +171,7 @@ bool eventloop::start()
             if(type_fd&EPOLLRDHUP)
             {
                 code->codecrdhup(it_se , ready_fd);
-            } 
+            }
             if(type_fd&EPOLLERR)
             {
                knight::utils::logger::getlogger().error(2,"连接出错");

@@ -10,31 +10,6 @@
 namespace knight::network
 {
 
-void codec::codecudpin(std::shared_ptr<netsession> se , int fd)
-{
-    char buf[1024];
-    int n = recvfrom(fd, buf, sizeof(buf), 0, nullptr, nullptr);
-    if (n > 0)
-    {
-        auto udp_task = se->get_udp_task();
-        if (udp_task) 
-        {
-            udp_task(buf, n);
-        }
-        else 
-        {
-            knight::utils::logger::getlogger().error(2, "UDP 回调函数未注入");
-        }
-    }
-    else if (n < 0)
-    {
-        if (errno != EAGAIN && errno != EWOULDBLOCK) 
-        {
-            knight::utils::logger::getlogger().error(2, "UDP recvfrom 出错");
-        }
-    }
-}
-
 void codec::codecin(std::unordered_map<uint64_t,std::unique_ptr<netsession>>::iterator it_se ,int ready_fd)
 {
     int len=it_se->second->recvhowsize_();

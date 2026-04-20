@@ -105,19 +105,9 @@ void netsession::set_task(std::function<void(uint64_t uid,char* s , size_t lengt
    session_task=fun;
 }
 
-void netsession::set_udp_task(std::function<void(const char* , size_t)> task)
-{
-   session_udp_task=std::move(task);
-}
-
 std::function<void(uint64_t uid,char* s , size_t length)>netsession::get_task()
 {
    return session_task;
-}
-
-std::function<void(const char*,size_t length)> netsession::get_udp_task()
-{
-   return session_udp_task;
 }
 
 }
